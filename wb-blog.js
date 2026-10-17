@@ -20,7 +20,7 @@ const isAdmin = () => !!(user && user.email && user.email.toLowerCase() === ADMI
 const say = m => (typeof window.toast === "function" ? window.toast(m, 2600) : alert(m));
 
 async function login(){
-  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  try { const pv = new GoogleAuthProvider(); pv.setCustomParameters({ login_hint: ADMIN_EMAIL }); await signInWithPopup(auth, pv); }
   catch (e) { if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") say("Gagal login blog: " + e.code); }
 }
 
