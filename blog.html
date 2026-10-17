@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wb.prediction</title>
+<style>
+:root{--bg:#ebeefb;--ink:#171b45;--mute:#5a6090;--line:#cfd5ee;--acc:#3239d6;--accink:#fff;--card:#f6f8ff;--bad:#c0262d}
+@media (prefers-color-scheme:dark){:root{--bg:#11142e;--ink:#e7e9ff;--mute:#9aa2d6;--line:#2a3060;--acc:#8c93ff;--accink:#11142e;--card:#1a1e42;--bad:#ff8a8f}}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0 auto;max-width:640px;padding:26px 20px 64px;color:var(--ink);font:17px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg)}
+a{color:var(--acc)}
+button{font:inherit;cursor:pointer}
+
+/* header */
+.top{margin-bottom:22px}
+.top a.home{text-decoration:none;color:var(--ink);display:block}
+h1.brand{font:800 34px/1.1 "Rockwell","Roboto Slab",Georgia,serif;margin:0;letter-spacing:-.01em;overflow-wrap:anywhere}
+.tag{color:var(--mute);margin:6px 0 0;font-size:15px;line-height:1.5}
+.nav{margin:12px 0 0;font-size:15px}
+.nav a,.nav b{margin-right:16px}
+.who{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;font-size:14px;color:var(--mute)}
+.pill{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 12px 4px 4px;color:var(--ink);font-weight:600}
+.av{width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--accink);display:grid;place-items:center;font-size:14px;font-weight:800}
+.btn{background:var(--acc);color:var(--accink);border:0;border-radius:99px;padding:9px 18px;font-weight:700;font-size:15px}
+.btn.ghost{background:transparent;color:var(--acc);border:1.5px solid var(--acc)}
+.btn.del{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+.btn:disabled{opacity:.5}
+.who .btn{padding:5px 14px;font-size:14px}
+
+/* bola nomor */
+.ball{--s:34px;width:var(--s);height:var(--s);border-radius:50%;display:inline-grid;place-items:center;color:#fff;
+  font:800 calc(var(--s)*.5)/1 ui-rounded,"SF Pro Rounded","Nunito","Trebuchet MS",system-ui,sans-serif;font-variant-numeric:tabular-nums;
+  background:radial-gradient(circle at 32% 27%,rgba(255,255,255,.6) 0 14%,rgba(255,255,255,0) 15%),var(--c);
+  box-shadow:inset -3px -4px 7px rgba(0,0,0,.22),0 1px 2px rgba(0,0,0,.18)}
+.ball.dk{color:#2b2100}
+.ball.sm{--s:28px}
+.ball.lg{--s:46px}
+.ball.xl{--s:58px}
+
+/* hero */
+.hero{margin:0 0 26px;padding:18px 0 20px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.hero .lbl{margin:0 0 12px;font-size:14px;color:var(--mute)}
+.hero a.row{display:flex;gap:8px;text-decoration:none}
+.hero .ttl{margin:14px 0 0;font:700 19px/1.4 Georgia,"Iowan Old Style",serif;color:var(--ink);overflow-wrap:anywhere}
+.hero.drop .ball{animation:jatuh .65s cubic-bezier(.3,1.5,.5,1) both;animation-delay:calc(var(--i)*90ms)}
+@keyframes jatuh{from{transform:translateY(-30px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.hero.drop .ball{animation:none}}
+
+/* daftar */
+.item{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.item:last-child{border-bottom:1px solid var(--line)}
+.codes{display:grid;grid-template-columns:repeat(2,28px);gap:4px;flex-shrink:0;align-content:start}
+.txt{min-width:0}
+.item h2{font:700 20px/1.35 Georgia,"Iowan Old Style",serif;margin:2px 0 2px;overflow-wrap:anywhere}
+.item:hover h2,.item:focus-visible h2{color:var(--acc)}
+.item p{margin:4px 0 0;color:var(--mute);font-size:15.5px;line-height:1.55;overflow-wrap:anywhere}
+.meta{color:var(--mute);font-size:14px}
+
+/* baca */
+.back{display:inline-block;margin-bottom:14px;font-size:15px}
+article .row{display:flex;gap:8px;margin:4px 0 16px}
+article h2{font:700 28px/1.3 Georgia,"Iowan Old Style",serif;margin:8px 0 16px;overflow-wrap:anywhere}
+article p{margin:0 0 1.1em;overflow-wrap:anywhere}
+article .meta{display:block}
+
+/* form */
+.compose{margin-bottom:22px}
+.compose summary{display:inline-block;list-style:none;cursor:pointer;background:var(--acc);color:var(--accink);border-radius:99px;padding:9px 18px;font-weight:700;font-size:15px}
+.compose summary::-webkit-details-marker{display:none}
+form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0 0}
+.note{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:22px}
+label{display:block;font-size:14px;color:var(--mute);margin-bottom:4px}
+input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:12px}
+textarea{min-height:130px;resize:vertical}
+.err{color:var(--bad);font-size:15px}
+.empty{color:var(--mute);padding:20px 0}
+footer{margin-top:40px;color:var(--mute);font-size:14px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="home" href="#"><h1 class="brand" id="brand"></h1><p class="tag" id="tag"></p></a>
+  <p class="nav"><a href="./">Beranda</a><b>Blog</b><a href="toko.html">Toko</a></p>
+  <div class="who" id="who"></div>
+</div>
+<main id="app"></main>
+<footer id="foot"></footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ====== EDIT DI SINI ====== */
+const BLOG = {
+  nama: "wb.prediction",
+  deskripsi: "Tulisan dari komunitas wb.prediction.",
+  footer: "© 2026 wb.prediction"
+};
+const ADMIN_EMAIL = "scenangka@gmail.com";
+const firebaseConfig = {
+  apiKey: "AIzaSyAZQuaa9qx4KZwFHPvk9ygJ_WphFnJ9Qnk",
+  authDomain: "wb-prediction.firebaseapp.com",
+  projectId: "wb-prediction",
+  storageBucket: "wb-prediction.firebasestorage.app",
+  messagingSenderId: "229482027147",
+  appId: "1:229482027147:web:b960d808af5f39721bdc8e"
+};
+/* ====== SELESAI ====== */
+
+const $ = id => document.getElementById(id);
+const bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const tgl = t => { if (!t) return "baru saja"; const d = t.toDate(); return `${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}`; };
+
+/* kode 4 angka dari id tulisan (hiasan, selalu sama untuk tulisan yang sama) */
+const kode = id => { let h = 2166136261; for (const c of id) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return String((h >>> 0) % 10000).padStart(4, "0"); };
+const WARNA = ["#e5484d","#f2a900","#1fa36b","#2f6bff","#8b5cf6"];
+const bola = (id, ukuran = "") => [...kode(id)].map((d, i) => { const k = (+d + i) % 5; return `<span class="ball ${ukuran} ${k === 1 ? "dk" : ""}" style="--c:${WARNA[k]};--i:${i}">${d}</span>`; }).join("");
+
+$("brand").textContent = BLOG.nama;
+$("tag").textContent = BLOG.deskripsi;
+$("foot").textContent = BLOG.footer;
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let user = null, posts = [], loaded = false, loadErr = "", sudahAnimasi = false;
+
+const isAdmin = () => user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+const canDelete = p => user && (isAdmin() || p.uid === user.uid);
+
+function renderWho(){
+  if (user) {
+    const nama = user.displayName || user.email;
+    $("who").innerHTML = `<span class="pill"><span class="av">${esc(nama.charAt(0).toUpperCase())}</span>${esc(nama)}${isAdmin() ? " (admin)" : ""}</span><button class="btn ghost" id="out">Keluar</button>`;
+    $("out").onclick = () => signOut(auth);
+  } else {
+    $("who").innerHTML = `<button class="btn ghost" id="in">Masuk</button>`;
+    $("in").onclick = login;
+  }
+}
+
+async function login(){
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { if (e.code !== "auth/popup-closed-by-user" && e.code !== "auth/cancelled-popup-request") alert("Gagal masuk: " + e.code); }
+}
+
+function render(){
+  const id = decodeURIComponent(location.hash.slice(1));
+  const main = $("app");
+  if (loadErr) { main.innerHTML = `<p class="err">${esc(loadErr)}</p>`; return; }
+  if (!loaded) { main.innerHTML = `<p class="empty">Memuat…</p>`; return; }
+
+  if (id) {
+    const p = posts.find(x => x.id === id);
+    if (!p) { main.innerHTML = `<a class="back" href="#">‹ Semua tulisan</a><p class="empty">Postingan tidak ditemukan atau sudah dihapus.</p>`; return; }
+    document.title = p.judul + " · " + BLOG.nama;
+    const body = p.isi.split(/\n+/).filter(Boolean).map(l => `<p>${esc(l)}</p>`).join("");
+    main.innerHTML = `<a class="back" href="#">‹ Semua tulisan</a><article><div class="row">${bola(p.id, "lg")}</div><span class="meta">${esc(p.nama)} · ${tgl(p.createdAt)}</span><h2>${esc(p.judul)}</h2>${body}</article>${canDelete(p) ? `<button class="btn del" id="del">Hapus postingan</button>` : ""}`;
+    const d = $("del");
+    if (d) d.onclick = async () => {
+      if (!confirm("Hapus postingan ini?")) return;
+      d.disabled = true;
+      try { await deleteDoc(doc(db, "posts", p.id)); location.hash = ""; }
+      catch (e) { alert("Gagal hapus: " + e.code); d.disabled = false; }
+    };
+    window.scrollTo(0, 0);
+    return;
+  }
+
+  document.title = BLOG.nama;
+  let hero = "";
+  if (posts.length) {
+    const t = posts[0];
+    hero = `<section class="hero ${sudahAnimasi ? "" : "drop"}"><p class="lbl">Tulisan terbaru</p><a class="row" href="#${encodeURIComponent(t.id)}" aria-label="${esc(t.judul)}">${bola(t.id, "xl")}</a><p class="ttl">${esc(t.judul)}</p></section>`;
+    sudahAnimasi = true;
+  }
+  const composer = user
+    ? `<details class="compose" id="cmp"><summary>Tulis postingan</summary><form id="f"><label for="j">Judul</label><input id="j" maxlength="120" required><label for="i">Isi</label><textarea id="i" maxlength="5000" required></textarea><button class="btn" id="kirim">Kirim</button></form></details>`
+    : `<div class="note">Mau menulis? <button class="btn" id="in2">Masuk dengan Google</button></div>`;
+  const list = posts.length
+    ? posts.map(p => `<a class="item" href="#${encodeURIComponent(p.id)}"><span class="codes">${bola(p.id, "sm")}</span><span class="txt"><span class="meta">${esc(p.nama)} · ${tgl(p.createdAt)}</span><h2>${esc(p.judul)}</h2><p>${esc(p.isi.slice(0, 110))}${p.isi.length > 110 ? "…" : ""}</p></span></a>`).join("")
+    : `<p class="empty">Belum ada tulisan. Jadilah yang pertama.</p>`;
+  main.innerHTML = hero + composer + list;
+
+  const f = $("f");
+  if (f) f.onsubmit = async e => {
+    e.preventDefault();
+    const b = $("kirim"); b.disabled = true;
+    try {
+      await addDoc(collection(db, "posts"), {
+        judul: $("j").value.trim(),
+        isi: $("i").value.trim(),
+        uid: user.uid,
+        nama: user.displayName || "Anonim",
+        createdAt: serverTimestamp()
+      });
+      f.reset(); $("cmp").open = false;
+    } catch (err) { alert("Gagal kirim: " + err.code); }
+    b.disabled = false;
+  };
+  const i2 = $("in2"); if (i2) i2.onclick = login;
+}
+
+onAuthStateChanged(auth, u => { user = u; renderWho(); render(); });
+window.addEventListener("hashchange", render);
+renderWho();
+render();
+
+onSnapshot(query(collection(db, "posts"), orderBy("createdAt", "desc"), limit(100)),
+  snap => { posts = snap.docs.map(d => ({ id: d.id, ...d.data() })); loaded = true; loadErr = ""; render(); },
+  err => { loadErr = "Gagal memuat tulisan: " + err.code; render(); });
+</script>
+</body>
+</html>
